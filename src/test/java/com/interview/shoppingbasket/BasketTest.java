@@ -50,6 +50,31 @@ public class BasketTest {
 
     @Test
     void consolidateBasketTest() {
-        // Exercise - implement the unit test for consolidate items
+        Basket basket = new Basket();
+        basket.add("productCode", "myProduct", 10);
+        basket.add("productCode2", "myProduct2", 20);
+        basket.add("productCode2", "myProduct2", 21);
+        basket.add("productCode2", "myProduct2", 22);
+        basket.add("productCode3", "myProduct3", 30);
+        basket.add("productCode3", "myProduct3", 31);
+
+        basket.consolidateItems();
+
+        assertEquals(3, basket.getItems().size());
+
+        long actualCount = basket.getItems().stream().filter(i -> "productCode".equals(i.getProductCode())).count();
+        assertEquals(1, actualCount);
+        long actualQtt = basket.getItems().stream().filter(i -> "productCode".equals(i.getProductCode())).findFirst().map(BasketItem::getQuantity).orElse(0);
+        assertEquals(10, actualQtt);
+
+        actualCount = basket.getItems().stream().filter(i -> "productCode2".equals(i.getProductCode())).count();
+        assertEquals(1, actualCount);
+        actualQtt = basket.getItems().stream().filter(i -> "productCode2".equals(i.getProductCode())).findFirst().map(BasketItem::getQuantity).orElse(0);
+        assertEquals(63, actualQtt);
+
+        actualCount = basket.getItems().stream().filter(i -> "productCode3".equals(i.getProductCode())).count();
+        assertEquals(1, actualCount);
+        actualQtt = basket.getItems().stream().filter(i -> "productCode3".equals(i.getProductCode())).findFirst().map(BasketItem::getQuantity).orElse(0);
+        assertEquals(61, actualQtt);
     }
 }

@@ -1,12 +1,18 @@
 package com.interview.shoppingbasket;
 
-class CheckoutContext {
-    private Basket basket;
-    private double retailPriceTotal = 0.0;
+import lombok.Getter;
+import lombok.Setter;
 
-    public void setRetailPriceTotal(double retailPriceTotal) {
-        this.retailPriceTotal = retailPriceTotal;
-    }
+import java.util.List;
+
+class CheckoutContext {
+    @Getter
+    private final Basket basket;
+    @Setter
+    private double retailPriceTotal = 0.0;
+    @Getter
+    @Setter
+    private List<Promotion> promotions;
 
     CheckoutContext(Basket basket) {
         this.basket = basket;
@@ -14,10 +20,5 @@ class CheckoutContext {
 
     public PaymentSummary paymentSummary() {
         return new PaymentSummary(retailPriceTotal);
-    }
-
-
-    public Basket getBasket() {
-        return basket;
     }
 }

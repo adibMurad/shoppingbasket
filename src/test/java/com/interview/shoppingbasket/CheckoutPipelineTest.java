@@ -1,10 +1,13 @@
 package com.interview.shoppingbasket;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 
 public class CheckoutPipelineTest {
 
@@ -22,6 +25,8 @@ public class CheckoutPipelineTest {
     @BeforeEach
     void setup() {
         checkoutPipeline = new CheckoutPipeline();
+        checkoutStep1 = Mockito.mock(CheckoutStep.class);
+        checkoutStep2 = Mockito.mock(CheckoutStep.class);
     }
 
     @Test
@@ -33,7 +38,13 @@ public class CheckoutPipelineTest {
 
     @Test
     void executeAllPassedCheckoutSteps() {
-        // Exercise - implement testing passing through all checkout steps
+        checkoutPipeline.addStep(checkoutStep1);
+        checkoutPipeline.addStep(checkoutStep2);
+
+        checkoutPipeline.checkout(basket);
+
+        verify(checkoutStep1).execute(any());
+        verify(checkoutStep2).execute(any());
     }
 
 }

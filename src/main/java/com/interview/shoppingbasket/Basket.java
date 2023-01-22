@@ -2,6 +2,8 @@ package com.interview.shoppingbasket;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Basket {
     private List<BasketItem> items = new ArrayList<>();
@@ -20,6 +22,12 @@ public class Basket {
     }
 
     public void consolidateItems() {
-        // Exercise - implement this function
+        items = items.stream()
+                .collect(Collectors
+                        .collectingAndThen(
+                                Collectors.toMap(BasketItem::getProductCode, Function.identity(), (item1, item2) -> {
+                                    item1.setQuantity(item1.getQuantity() + item2.getQuantity());
+                                    return item1;
+                                }), m -> new ArrayList<>(m.values())));
     }
 }
